@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-slate-50">
+    <main class="container mx-auto pt-5">
+      <section
+        class="border-b border-slate-300 py-2 px-3 flex gap-4 max-w-lg mx-auto"
+      >
+        <button
+          id="form-tab-btn"
+          class="bg-slate-200 px-4 py-2 rounded-lg cursor-pointer hover:bg-sky-100 text-sm font-medium"
+        >
+          Form
+        </button>
+        <button
+          id="table-tab-btn"
+          class="bg-slate-100 px-4 py-2 rounded-lg cursor-pointer hover:bg-sky-100 text-sm font-medium"
+        >
+          Table
+        </button>
+      </section>
+      <section id="content" class="pt-4"></section>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
