@@ -1,0 +1,121 @@
+/* CSS reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-500: #5142fc;
+  --primary-700: #3128a0;
+  --font-xl: 2.5rem;
+}
+
+.box {
+  width: 400px;
+  height: 240px;
+  background-color: aquamarine;
+  /* visibility: hidden; */
+  /* display: none; */
+  overflow-y: auto;
+  position: relative;
+}
+
+.chat-btn {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background-color: blue;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.chat-btn:hover {
+  background-color: pink;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.sticky-box {
+  width: 100px;
+  height: 300px;
+  background-color: aqua;
+  /* position: sticky;
+  top: 10px;
+  bottom: 10px; */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.red-box {
+  position: absolute;
+  background-color: red;
+  width: 130px;
+  height: 130px;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.blue-box {
+  width: 130px;
+  height: 130px;
+  right: 50px;
+  bottom: 50px;
+  position: absolute;
+  background-color: blue;
+}
+
+a:visited {
+  color: red;
+}
+
+a:hover {
+  color: black;
+  font-weight: 600;
+}
+
+a:active {
+  color: blueviolet;
+}
+
+.card {
+  /* border box */
+  width: 50%;
+  /* width: 300px; */
+  background-color: aquamarine;
+  padding: 30px;
+  border: 10px solid black;
+}
+
+.wrapper {
+  margin: 10px;
+}
+
+.wrapper p {
+  font-size: var(--font-xl);
+}
+
+.wrapper button {
+  background-color: var(--primary-500);
+  border: 1px solid var(--primary-500);
+  color: white;
+  border-radius: 6px;
+  padding: 5px 20px;
+}
+
+.wrapper button:hover {
+  background-color: var(--primary-700);
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.bolt {
+  fill: white;
+  width: 16px;
+  height: 16px;
+}

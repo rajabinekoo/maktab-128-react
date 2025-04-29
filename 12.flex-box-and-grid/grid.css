@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --soft-blue: #3483e8;
+  --light-mustard: #ecbb52;
+  --bright-teal: #00f0bf;
+  --warm-pink: #f83c79;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0px 20px;
+}
+
+.row1 {
+  background-color: var(--soft-blue);
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row1 span {
+  color: white;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.row2 {
+  display: grid;
+  margin-top: 20px;
+  column-gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.row2 .gray-box {
+  background-color: gainsboro;
+  color: black;
+  width: 100%;
+  height: 200px;
+  padding: 35px 20px;
+  text-align: center;
+}
+
+.row2 .gray-box .title {
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.row3 {
+  display: grid;
+  column-gap: 20px;
+  margin-top: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.row3 .box {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: white;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row3 .pink-box {
+  background-color: var(--warm-pink);
+}
+
+.row3 .teal-box {
+  background-color: var(--bright-teal);
+}
+
+.row3 .blue-box {
+  background-color: var(--soft-blue);
+}
+
+.row3 .orange-box {
+  background-color: var(--light-mustard);
+}

@@ -1,0 +1,48 @@
+* {
+  color: gray;
+  font-size: 22px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+p.title,
+h2.title {
+  color: firebrick !important;
+  font-size: 64px;
+  text-align: center;
+}
+
+#goodbye {
+  text-decoration: underline;
+  color: green !important;
+}
+
+.blue {
+  color: blue;
+}
+
+.sec1 > div p {
+  text-align: right;
+}
+
+.sec1 > div + span {
+  text-decoration: underline;
+}
+
+.sec1 > div ~ span {
+  /* rgb -> 0 until 255 */
+  background-color: rgb(255, 125, 0);
+  background-color: #FF7700;
+  /* background-color: #3bda9b; */
+}
+
+/* .sec1 p {
+  text-align: right;
+} */
+/* .sec1 > p {
+  text-align: right;
+} */
+
+/* priority: !important > inline > id > class > tagname > * */
