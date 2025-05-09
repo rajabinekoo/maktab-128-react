@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel</title>
+  </head>
+  <body>
+    <main class="container mx-auto pt-xl pb-md px-sm">
+      <section class="flex justify-between items-center">
+        <div>
+          <p class="font-bold text-primary-500 text-lg">
+            Welcome <span id="username-placeholder">Unknown</span>
+          </p>
+          <p class="text-cool-gray-800 text-md">To do list</p>
+        </div>
+        <button
+          id="new-task-btn"
+          class="bg-primary-500 text-white rounded-xl font-semibold text-sm w-[100px] py-xs hover:bg-primary-400 cursor-pointer"
+        >
+          New Task
+        </button>
+      </section>
+
+      <section class="mt-md space-y-lg">
+        <!-- In-progress table -->
+        <div>
+          <p class="text-cool-gray-700 font-semibold text-xs">
+            In Progress Tasks
+          </p>
+          <div
+            class="border border-cool-gray-100 rounded-xl overflow-x-auto mt-sm"
+          >
+            <table class="w-full">
+              <thead
+                class="bg-cool-gray-50 rounded-xl text-cool-gray-500 text-xs !font-normal"
+              >
+                <th class="py-xs text-left px-sm font-medium">ID</th>
+                <th class="py-xs text-left px-sm font-medium">Title</th>
+                <th class="py-xs text-left px-sm font-medium">Description</th>
+                <th class="py-xs text-right px-sm font-medium">Actions</th>
+              </thead>
+              <tbody id="in-progress-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Completed table -->
+        <div>
+          <p class="text-cool-gray-700 font-semibold text-xs">
+            Completed Tasks
+          </p>
+          <div
+            class="border border-cool-gray-100 rounded-xl overflow-x-auto mt-sm"
+          >
+            <table class="w-full">
+              <thead
+                class="bg-cool-gray-50 rounded-xl text-cool-gray-500 text-xs !font-normal"
+              >
+                <th class="py-xs text-left px-sm font-medium">ID</th>
+                <th class="py-xs text-left px-sm font-medium">Title</th>
+                <th class="py-xs text-left px-sm font-medium">Description</th>
+                <th class="py-xs text-right px-sm font-medium">Actions</th>
+              </thead>
+              <tbody id="completed-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- create task dialog -->
+    <div
+      id="new-task-overlay"
+      class="hidden z-10 fixed bg-black/30 left-0 top-0 w-dvw h-dvh"
+    >
+      <div class="container mx-auto px-sm flex justify-center">
+        <div
+          id="new-task-dialog-box"
+          class="bg-white rounded-xl max-w-[500px] w-full mt-[100px] px-lg"
+        >
+          <div class="flex justify-between pt-sm">
+            <p class="text-lg font-semibold text-cool-gray-800">New Task</p>
+            <button id="close-dialog-box" class="cursor-pointer">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M14.8504 2.45054C15.2097 2.09126 15.2097 1.50874 14.8504 1.14946C14.4912 0.790185 13.9086 0.790185 13.5494 1.14946L7.99989 6.69894L2.45043 1.14946C2.09113 0.790185 1.50862 0.790185 1.14934 1.14946C0.790063 1.50874 0.790063 2.09126 1.14934 2.45054L6.69881 8.00001L1.14934 13.5495C0.790063 13.9088 0.790063 14.4912 1.14934 14.8506C1.50862 15.2098 2.09113 15.2098 2.45043 14.8506L7.99989 9.30108L13.5494 14.8506C13.9086 15.2098 14.4912 15.2098 14.8504 14.8506C15.2097 14.4912 15.2097 13.9088 14.8504 13.5495L9.30096 8.00001L14.8504 2.45054Z"
+                  fill="#6B7280"
+                />
+              </svg>
+            </button>
+          </div>
+          <form id="new-task-form">
+            <div class="pb-md pt-sm space-y-sm">
+              <div>
+                <label
+                  for="title"
+                  class="font-semibold text-xs text-cool-gray-500"
+                >
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="Enter a title"
+                  class="shadow-input w-full h-[38px] border border-cool-gray-100 mt-0.5 rounded-xl px-[13px] text-sm text-cool-gray-800 placeholder:text-sm placeholder:text-cool-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-200"
+                />
+                <p
+                  id="title-err"
+                  class="text-danger-400 text-xs font-semibold mt-1 hidden"
+                ></p>
+              </div>
+              <div>
+                <label
+                  for="description"
+                  class="font-semibold text-xs text-cool-gray-500"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="Enter the description"
+                  class="shadow-input w-full h-[38px] border border-cool-gray-100 mt-0.5 rounded-xl px-[13px] py-xs text-sm text-cool-gray-800 placeholder:text-sm placeholder:text-cool-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-200"
+                ></textarea>
+                <p
+                  id="description-err"
+                  class="text-danger-400 text-xs font-semibold mt-1 hidden"
+                ></p>
+              </div>
+              <button
+                class="bg-primary-500 text-white rounded-xl font-semibold text-sm w-full py-xs hover:bg-primary-400 cursor-pointer mt-sm"
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/config.js"></script>
+    <script type="module" src="/src/panel.js"></script>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 import { login } from "../apis/auth";
+import { tokenName } from "../libs/constants";
 
 const username = document.getElementById("username");
 const password = document.getElementById("password");
@@ -36,7 +37,8 @@ document
     const data = { username: usernameValue, password: passwordValue };
     try {
       const resBody = await login(data);
-      console.log(resBody);
+      localStorage.setItem(tokenName, resBody.token);
+      location.href = "/panel";
     } catch (error) {
       const msg = error.response?.data?.message;
       if (Array.isArray(msg)) {

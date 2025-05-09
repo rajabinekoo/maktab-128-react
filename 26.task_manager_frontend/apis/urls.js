@@ -5,4 +5,14 @@ export const urls = {
     login: "/auth/login",
     signup: "/auth/signup",
   },
+  task: {
+    list: "/task",
+    new: "/task",
+    delete: (id) => `/task/${id}`,
+    done: (id) => `/task/done/${id}`,
+    inprogress: (id) => `/task/inprogress/${id}`,
+  },
+  user: {
+    info: "/user",
+  },
 };
