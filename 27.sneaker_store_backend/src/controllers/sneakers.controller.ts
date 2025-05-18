@@ -70,7 +70,7 @@ export class TaskController {
   ): Promise<IGetSneakersResult> {
     return this.sneakerService.getAllSneakers({
       page: page || 1,
-      limit: limit | 10,
+      limit: limit || 10,
       search,
       brands:
         brands instanceof Array ? brands : !!brands ? [brands] : undefined,
