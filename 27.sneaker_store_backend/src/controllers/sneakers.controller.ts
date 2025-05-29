@@ -13,8 +13,8 @@ import { IGetSneakersResult } from 'src/interfaces/get-sneakers.interface';
 
 @Controller('sneaker')
 @ApiTags('sneaker')
-@ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(AuthGuard)
 export class TaskController {
   constructor(private readonly sneakerService: SneakerService) {}
 
