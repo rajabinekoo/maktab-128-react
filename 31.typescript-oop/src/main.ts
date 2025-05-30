@@ -1,6 +1,6 @@
 // OOP system
 
-// 1.class
+// ======== class ========
 class Animal implements IAnimal, A {
   // 1. constructor
   // 2. properties
@@ -11,7 +11,7 @@ class Animal implements IAnimal, A {
   public color: string;
   chert: string = "pert";
 
-  // encapsulation
+  // ======== encapsulation ========
   protected sound: string;
 
   constructor(c: string, s: string, public foots: number) {
@@ -44,7 +44,7 @@ fox.speak();
 // console.log(fox);
 // speak.call(fox);
 
-// 2. interface
+// ======== interface ========
 
 interface A {
   chert: string;
@@ -60,7 +60,7 @@ function showAnimalInfo(animal: IAnimal) {
 }
 showAnimalInfo(fox);
 
-// inheritance
+// ======== inheritance ========
 
 class Dog extends Animal {
   private speed: number;
@@ -120,7 +120,7 @@ class BCD implements B, C, D {
   c() {}
 }
 
-// composition
+// ======== composition ========
 
 class MotherBoard {
   public name: string;
@@ -185,11 +185,138 @@ class PC {
   }
 }
 
-const pc1 = new PC(
-  new CPU("INTEL"),
-  new RAM("MSI RAM"),
-  new MotherBoard("MSI Motherboard")
-);
-console.log(pc1);
-pc1.start();
-pc1.calc(1, 2);
+// const pc1 = new PC(
+//   new CPU("INTEL"),
+//   new RAM("MSI RAM"),
+//   new MotherBoard("MSI Motherboard")
+// );
+// console.log(pc1);
+// pc1.start();
+// pc1.calc(1, 2);
+
+// ======== polymorphism ========
+
+// way1
+// class Person {
+//   name: string;
+//   age: number;
+//   eyeColor: string;
+
+//   constructor(name: string, age: number, eyeColor: string) {
+//     this.name = name;
+//     this.age = age;
+//     this.eyeColor = eyeColor;
+//   }
+// }
+
+// class Student {
+//   constructor(public name: string, public gpa: number, public stuNum: number) {}
+// }
+
+function greeting(p: Person | Student) {
+  console.log("Greeting", p.name);
+}
+
+// way2
+class Person {
+  name: string;
+  age: number;
+  eyeColor: string;
+
+  constructor(name: string, age: number, eyeColor: string) {
+    this.name = name;
+    this.age = age;
+    this.eyeColor = eyeColor;
+  }
+}
+
+class Student extends Person {
+  constructor(
+    name: string,
+    age: number,
+    eyeColor: string,
+    public gpa: number,
+    public stuNum: number
+  ) {
+    super(name, age, eyeColor);
+  }
+}
+
+function greeting2(p: Person) {
+  console.log("Greeting", p.name);
+}
+
+const p = new Person("Bob", 40, "black");
+const s = new Student("Alice", 20, "brown", 9, 123123);
+
+greeting2(s);
+
+// ======== abstraction ========
+
+abstract class Vehicle {
+  abstract startMotor();
+  steering() {
+    console.log("steering");
+  }
+}
+
+class AutoMobile extends Vehicle {
+  startMotor() {
+    console.log("han han hannnnnnnnnnnnnnnn");
+  }
+  override steering(): void {
+    console.log("steering 2");
+  }
+}
+
+// const autoMobile1 = new AutoMobile();
+// autoMobile1.startMotor();
+// autoMobile1.steering();
+
+abstract class Comparable {
+  protected abstract compare(item1: number, item2: number): number;
+}
+
+interface IComparable {
+  compare(item1: number, item2: number): number;
+}
+
+class BubbleSort extends Comparable {
+  constructor(public numList: number[]) {
+    super();
+  }
+
+  private swap(index1: number, index2: number) {
+    const temp = this.numList[index1];
+    this.numList[index1] = this.numList[index2];
+    this.numList[index2] = temp;
+  }
+
+  protected override compare(item1: number, item2: number) {
+    return item1 > item2 ? 1 : 0;
+  }
+
+  public sort() {
+    for (let i = 0; i < this.numList.length; i++) {
+      for (let j = 0; j < this.numList.length - 1 - i; j++) {
+        if (this.compare(this.numList[j], this.numList[j + 1])) {
+          this.swap(j, j + 1);
+        }
+      }
+    }
+  }
+}
+
+class BubbleSort2 extends BubbleSort {
+  protected compare(item1: number, item2: number) {
+    return item1 < item2 ? 1 : 0;
+  }
+}
+
+const b1 = new BubbleSort2([2, -4, 1, 9, 6, -10]);
+b1.sort();
+console.log(b1.numList);
+
+// ======== generic ========
+
+
