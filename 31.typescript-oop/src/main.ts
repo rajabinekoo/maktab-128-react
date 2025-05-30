@@ -313,10 +313,94 @@ class BubbleSort2 extends BubbleSort {
   }
 }
 
-const b1 = new BubbleSort2([2, -4, 1, 9, 6, -10]);
-b1.sort();
-console.log(b1.numList);
+// const b1 = new BubbleSort2([2, -4, 1, 9, 6, -10]);
+// b1.sort();
+// console.log(b1.numList);
 
 // ======== generic ========
 
+interface Book {
+  isbn: number;
+  name: string;
+}
 
+interface Laptop {
+  model: string;
+  brand: string;
+}
+
+interface IListResDto<T> {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  list: T[];
+}
+
+type IListResDto2<T> = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  list: T[];
+};
+
+const books: IListResDto<Book> = {
+  page: 1,
+  limit: 10,
+  total: 100,
+  totalPages: 10,
+  list: [
+    { name: "Antifragile", isbn: 4 },
+    { name: "Antifragile", isbn: 2 },
+    { name: "Antifragile", isbn: 5 },
+    { name: "Antifragile", isbn: 1 },
+  ],
+};
+
+const laptops: IListResDto<Laptop> = {
+  page: 1,
+  limit: 10,
+  total: 100,
+  totalPages: 10,
+  list: [{ brand: "MSI", model: "KATANA" }],
+};
+
+class BubbleSort3<T = number> {
+  constructor(public numList: T[]) {}
+
+  private swap(index1: number, index2: number) {
+    const temp = this.numList[index1];
+    this.numList[index1] = this.numList[index2];
+    this.numList[index2] = temp;
+  }
+
+  public sort(compare: (_1: T, _2: T) => number) {
+    for (let i = 0; i < this.numList.length; i++) {
+      for (let j = 0; j < this.numList.length - 1 - i; j++) {
+        if (compare(this.numList[j], this.numList[j + 1]) > 0) {
+          this.swap(j, j + 1);
+        }
+      }
+    }
+  }
+}
+
+// const b2 = new BubbleSort3<Book>(books.list);
+// b2.sort((a, b) => a.isbn - b.isbn);
+// console.log(b2.numList);
+
+function bubbleSort<T>(list: Array<T>, compare: (_1: T, _2: T) => number) {
+  for (let i = 0; i < list.length; i++) {
+    for (let j = 0; j < list.length - 1 - i; j++) {
+      if (compare(list[j], list[j + 1]) > 0) {
+        const temp = list[j];
+        list[j] = list[j + 1];
+        list[j + 1] = temp;
+      }
+    }
+  }
+}
+
+// bubbleSort<Book>(books.list, (a, b) => a.isbn - b.isbn);
+// console.log(books.list);
