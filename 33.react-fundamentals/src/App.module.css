@@ -1,0 +1,67 @@
+.wrapper {
+  width: 100%;
+  margin: auto;
+  max-width: 400px;
+  margin-top: 30px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.title {
+  font-size: larger;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.inp {
+  border: 1px solid black;
+  padding: 4px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  column-gap: 5px;
+  margin-top: 20px;
+  /* flex-wrap: wrap; */
+}
+
+.form-btn {
+  background-color: blue;
+  color: white;
+  font-weight: 600;
+  border: 1px solid blue;
+  border-radius: 6px;
+  padding: 0 4px;
+}
+
+.msg-err {
+  color: black;
+  background-color: rgb(255, 201, 201);
+  border: rgb(255, 201, 201) 1px solid;
+  border-radius: 6px;
+  padding: 6px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.cart-row {
+  display: flex;
+  column-gap: 5px;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.del-btn {
+  background-color: red;
+  color: white;
+  font-weight: 600;
+  border: 1px solid red;
+  border-radius: 6px;
+  padding: 0 4px;
+}
