@@ -1,5 +1,5 @@
 import { z } from "zod";
-import React from "react";
+import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 
 import { Button } from "../components/button";
@@ -25,6 +25,7 @@ export const ContactUsForm: React.FC = () => {
 
   const changeValue = (k: keyof IValuesSchema, v: string) => {
     setValues({ ...values, [k]: v });
+    if (Object.keys(errors).length === 0) return;
     const e = { ...errors };
     delete e[k];
     setErrors(e);
@@ -45,6 +46,21 @@ export const ContactUsForm: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    console.log("update");
+  });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
+  useEffect(() => {
+    console.log("mount");
+    return () => {
+      console.log("unmount");
+    };
+  }, []);
 
   return (
     <form
