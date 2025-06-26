@@ -4,10 +4,16 @@ const ContactUsForm = z.object({
   firstname: z.string().min(3),
   lastname: z.string().min(3),
   address: z.string().min(5),
-  email: z.string().email(),
+  email: z.string().regex(/^[a-z]\w{4,}@gmail.com$/gi, "Invalid email address"),
+  // email: z.string().email(),
 });
 
-type ContactUsType = z.infer<typeof ContactUsForm>;
+type ContactUsType = {
+  firstname: string;
+  lastname: string;
+  address: string;
+  email: string;
+}
 
 export const contactUsFormValidation = (values: ContactUsType) => {
   return ContactUsForm.parse(values);
