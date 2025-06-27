@@ -18,3 +18,11 @@ type ContactUsType = {
 export const contactUsFormValidation = (values: ContactUsType) => {
   return ContactUsForm.parse(values);
 };
+
+
+const a: ContactUsType = {
+  firstname: "ali",
+  lastname: "rajabi",
+  address: "test",
+  email: "test@gmail.com"
+}
