@@ -2,6 +2,7 @@ interface IContact {
   id: number;
   name: string;
   email: string;
+  avatar: string;
 }
 
 interface IState {
@@ -13,10 +14,6 @@ interface IState {
 type Action =
   | { type: "ADD"; payload: Omit<IContact, "id"> }
   | { type: "DELETE"; payload: number }
-  | { type: "SET_EDIT"; payload: IContact }
-  | { type: "UPDATE"; payload: IContact };
-
-interface IContactFormSchema {
-  name: string;
-  email: string;
-}
+  | { type: "SET_EDIT"; payload?: IContact }
+  | { type: "UPDATE"; payload: IContact }
+  | { type: "SET"; payload: IContact[] };
