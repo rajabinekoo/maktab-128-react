@@ -2,21 +2,26 @@ import { useContext, useEffect } from "react";
 
 import { Dialog } from "../atom/dialog";
 import { SearchProvider } from "../../providers/search";
+import { ContactProvider } from "../../providers/contact";
 import { ContactForm } from "../molecules/contact/contact-form";
 import { ContactsList } from "../molecules/contact/contact-list";
+import { contactsActions } from "../../redux/slices/contactSlice";
 import { ContactsHeader } from "../molecules/contact/contact-header";
 import { DialogContext, DialogProvider } from "../../providers/dialog";
-import { ContactContext, ContactProvider } from "../../providers/contact";
+import { useAppDispatch, useAppSelector } from "../../hooks/use-redux";
 
 const DialogForm: React.FC = () => {
   const { open } = useContext(DialogContext);
-  const { dispatch, editingContact } = useContext(ContactContext);
+  const dispatch = useAppDispatch();
+  const editingContact = useAppSelector(
+    (state) => state.contacts.editingContact
+  );
 
   useEffect(() => {
     if (open) return;
     if (!editingContact) return;
-    dispatch({ type: "SET_EDIT", payload: undefined });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(contactsActions.clearEdit());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, editingContact]);
 
   return (

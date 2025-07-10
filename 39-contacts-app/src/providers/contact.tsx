@@ -10,7 +10,10 @@ export const ContactContext = createContext<{
   editingContact?: IContact;
 }>({ contacts: [], dispatch: () => undefined });
 
-const reducer = (state: IState, action: Action) => {
+const reducer: (state: IState, action: Action) => IState = (
+  state: IState,
+  action: Action
+) => {
   if (!state.id) state.id = 0;
   switch (action.type) {
     case "ADD": {
@@ -19,16 +22,16 @@ const reducer = (state: IState, action: Action) => {
         ...state,
         id,
         contacts: [...state.contacts, { ...action.payload, id }],
-      } as IState;
+      };
     }
     case "DELETE": {
       return {
         ...state,
         contacts: state.contacts.filter((el) => el.id !== action.payload),
-      } as IState;
+      };
     }
     case "SET_EDIT": {
-      return { ...state, editingContact: action.payload } as IState;
+      return { ...state, editingContact: action.payload };
     }
     case "UPDATE": {
       return {
@@ -40,7 +43,7 @@ const reducer = (state: IState, action: Action) => {
           }
           return el;
         }),
-      } as IState;
+      };
     }
     case "SET": {
       if (!Array.isArray(action.payload)) return state;
@@ -49,7 +52,7 @@ const reducer = (state: IState, action: Action) => {
         ...state,
         id: lastId,
         contacts: action.payload,
-      } as IState;
+      };
     }
     default: {
       throw new Error("Unknown action.");

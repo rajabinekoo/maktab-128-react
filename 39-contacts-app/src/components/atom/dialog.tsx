@@ -11,15 +11,17 @@ const DialogWrapper: React.FC<IChildren> = ({ children }) => {
   const { open, setOpen } = useContext(DialogContext);
 
   useEffect(() => {
-    if (!wrapper.current || !open || !dialogBox.current) return;
-    wrapper.current.addEventListener("click", (event) => {
-      if (!dialogBox.current?.contains(event.target as Node)) {
+    const wrapperDom = wrapper.current;
+    const dialogBoxDom = dialogBox.current;
+    if (!wrapperDom || !open || !dialogBoxDom) return;
+    wrapperDom.addEventListener("click", (event) => {
+      if (!dialogBoxDom.contains(event.target as Node)) {
         setOpen(false);
       }
     });
     return () => {
-      wrapper.current?.removeEventListener("click", () => undefined);
-      dialogBox.current?.removeEventListener("click", () => undefined);
+      wrapperDom.removeEventListener("click", () => undefined);
+      dialogBoxDom.removeEventListener("click", () => undefined);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dialogBox, wrapper, open]);

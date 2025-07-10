@@ -11,6 +11,12 @@ interface IState {
   editingContact?: IContact;
 }
 
+interface IContactSliceState {
+  id: number;
+  list: IContact[];
+  editingContact?: IContact;
+}
+
 type Action =
   | { type: "ADD"; payload: Omit<IContact, "id"> }
   | { type: "DELETE"; payload: number }

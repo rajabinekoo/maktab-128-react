@@ -1,44 +1,52 @@
 import { useContext, useEffect } from "react";
 
-import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
 import { Input } from "../../atom/input";
 import { Button } from "../../atom/button";
+import { AvatarInput } from "../../atom/avatar-input";
 import { DialogContext } from "../../../providers/dialog";
-import { ContactContext } from "../../../providers/contact";
+import { fileToBase64 } from "../../../utils/file-to-base64";
+import { base64toFile } from "../../../utils/base64-to-file";
+import { contactsActions } from "../../../redux/slices/contactSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/use-redux";
 import {
   contactFormSchema,
   type contactFormSchemaType,
 } from "../../../validations/contact-form-validation";
-import { AvatarInput } from "../../atom/avatar-input";
-import { fileToBase64 } from "../../../utils/file-to-base64";
-import { base64toFile } from "../../../utils/base64-to-file";
 
 export const ContactForm = () => {
   const { setOpen } = useContext(DialogContext);
-  const { dispatch, editingContact } = useContext(ContactContext);
+
+  const dispatch = useAppDispatch();
+  const editingContact = useAppSelector(
+    (state) => state.contacts.editingContact
+  );
   const form = useForm<contactFormSchemaType>({
     resolver: zodResolver(contactFormSchema),
   });
 
   const submit = async (data: contactFormSchemaType) => {
     const avatar = await fileToBase64(data.avatar);
-    if (editingContact)
-      dispatch({
-        type: "UPDATE",
-        payload: {
+    if (editingContact) {
+      dispatch(
+        contactsActions.update({
           id: editingContact.id,
           name: data.name,
           email: data.email,
           avatar,
-        },
-      });
-    else
-      dispatch({
-        type: "ADD",
-        payload: { name: data.name, email: data.email, avatar },
-      });
+        })
+      );
+    } else {
+      dispatch(
+        contactsActions.add({
+          avatar,
+          name: data.name,
+          email: data.email,
+        })
+      );
+    }
     form.reset({ name: "", email: "" });
     setOpen(false);
   };

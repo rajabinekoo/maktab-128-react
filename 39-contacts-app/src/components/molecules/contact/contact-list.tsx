@@ -2,23 +2,21 @@ import { useContext, useMemo } from "react";
 
 import { Button } from "../../atom/button";
 import { EmptyIcon } from "../../icons/empty";
+import type { AppDispatch } from "../../../redux/store";
 import { SearchContext } from "../../../providers/search";
 import { DialogContext } from "../../../providers/dialog";
-import { ContactContext } from "../../../providers/contact";
+import { contactsActions } from "../../../redux/slices/contactSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/use-redux";
 
 const ContactRow: React.FC<{
   contact: IContact;
-  dispatch: React.ActionDispatch<[action: Action]>;
+  dispatch: AppDispatch;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ contact, dispatch, setDialogOpen }) => {
   return (
     <div className="flex justify-between items-center sm:flex-nowrap flex-wrap gap-2 w-full border border-slate-300 rounded-md p-5">
       <div className="flex gap-x-3 items-center">
-        <img
-          src={contact.avatar}
-          className="w-20 aspect-square"
-          alt="avatar"
-        />
+        <img src={contact.avatar} className="w-20 aspect-square" alt="avatar" />
         <div>
           <p>Name: {contact.name}</p>
           <p>Email: {contact.email}</p>
@@ -27,7 +25,7 @@ const ContactRow: React.FC<{
       <div className="flex gap-2">
         <Button
           onClick={() => {
-            dispatch({ type: "SET_EDIT", payload: contact });
+            dispatch(contactsActions.setEdit(contact));
             setDialogOpen(true);
           }}
         >
@@ -35,7 +33,7 @@ const ContactRow: React.FC<{
         </Button>
         <Button
           varient="danger"
-          onClick={() => dispatch({ type: "DELETE", payload: contact.id })}
+          onClick={() => dispatch(contactsActions.remove(contact.id))}
         >
           Remove
         </Button>
@@ -45,9 +43,11 @@ const ContactRow: React.FC<{
 };
 
 export const ContactsList = () => {
-  const { dispatch, contacts } = useContext(ContactContext);
   const { search } = useContext(SearchContext);
   const { setOpen: setDialogOpen } = useContext(DialogContext);
+
+  const dispatch = useAppDispatch();
+  const contacts = useAppSelector((state) => state.contacts.list);
 
   const list = useMemo(() => {
     return contacts.filter((el) => {
@@ -63,9 +63,9 @@ export const ContactsList = () => {
         {list.map((el) => (
           <ContactRow
             key={el.id}
-            setDialogOpen={setDialogOpen}
-            dispatch={dispatch}
             contact={el}
+            dispatch={dispatch}
+            setDialogOpen={setDialogOpen}
           />
         ))}
         {!list?.length && (

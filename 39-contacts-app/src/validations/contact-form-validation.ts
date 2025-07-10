@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const validFormats = ["image/png", "image/jpg"];
+const validFormats = ["image/png", "image/jpg", "image/jpeg"];
 const validSize = 2000000;
 
 export const contactFormSchema = z.object({
