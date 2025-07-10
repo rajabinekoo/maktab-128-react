@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Not, QueryRunner, Repository } from 'typeorm';
 
 import { Customer } from 'libs/entities';
 import {
+  IListResponse,
   AddNewCustomerDto,
   UpdateCustomerDto,
   ICheckDuplicationDto,
@@ -35,7 +36,9 @@ export class CustomersService {
     ]);
   }
 
-  public async getCustomers(params?: IGetCustomersListParams) {
+  public async getCustomers(
+    params?: IGetCustomersListParams,
+  ): Promise<IListResponse<Customer>> {
     const page = Number(params?.page || 1);
     const limit = Number(params?.limit || 10);
     const where: FindOptionsWhere<Customer>[] = [];
@@ -57,6 +60,15 @@ export class CustomersService {
   }
 
   public async addNewCustomer(data: AddNewCustomerDto) {
+    console.log(
+      data,
+      new Customer({
+        avatar: data.file,
+        name: data.name.toLowerCase(),
+        email: data.email.toLowerCase(),
+      }),
+    );
+
     return this.customerRepostory.save(
       new Customer({
         avatar: data.file,
@@ -78,6 +90,24 @@ export class CustomersService {
         name: data.name?.toLowerCase?.() || undefined,
         email: data.email?.toLowerCase?.() || undefined,
       }),
+    );
+  }
+
+  public async setCustomerBalance(
+    customerId: number,
+    newBalance: number,
+    queryRunner?: QueryRunner,
+  ) {
+    if (!queryRunner) {
+      return await this.customerRepostory.update(
+        { id: customerId },
+        { balance: newBalance },
+      );
+    }
+    await queryRunner.manager.update(
+      Customer,
+      { id: customerId },
+      { balance: newBalance },
     );
   }
 }

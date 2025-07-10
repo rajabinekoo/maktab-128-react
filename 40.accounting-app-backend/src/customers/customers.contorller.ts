@@ -15,6 +15,7 @@ import {
   UseInterceptors,
   NotFoundException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 
 import { StorageService } from '@app/storage';
@@ -54,7 +55,13 @@ export class CustomersController {
     const duplication = await this.customersService.getCustomerByData(body);
     if (duplication) throw new ConflictException('Already exist');
     body.file = await this.storageService.put(avatar.buffer, avatar.mimetype);
-    return this.customersService.addNewCustomer(body);
+    try {
+      return await this.customersService.addNewCustomer(body);
+    } catch (e) {
+      console.error(e);
+      await this.storageService.delete(body.file);
+      throw new InternalServerErrorException('Something went wrong');
+    }
   }
 
   @Put(':customerId')
@@ -81,9 +88,16 @@ export class CustomersController {
       );
     if (avatar) {
       body.file = await this.storageService.put(avatar.buffer, avatar.mimetype);
-      await this.storageService.delete(customer.avatar);
     }
-    return this.customersService.updateCustomer(customer, body);
+    try {
+      const oldAvatar = customer.avatar;
+      const result = await this.customersService.updateCustomer(customer, body);
+      await this.storageService.delete(oldAvatar);
+      return result;
+    } catch {
+      await this.storageService.delete(body.file);
+      throw new InternalServerErrorException('Something went wrong');
+    }
   }
 
   @Delete(':customerId')
