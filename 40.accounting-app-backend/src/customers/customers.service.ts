@@ -83,14 +83,16 @@ export class CustomersService {
   }
 
   public async updateCustomer(target: Customer, data: UpdateCustomerDto) {
-    await this.customerRepostory.update(
-      { id: target.id },
-      new Customer({
-        avatar: data.file || undefined,
-        name: data.name?.toLowerCase?.() || undefined,
-        email: data.email?.toLowerCase?.() || undefined,
-      }),
-    );
+    const newCustomer = new Customer({
+      avatar: data.file || undefined,
+      name: data.name?.toLowerCase?.() || undefined,
+      email: data.email?.toLowerCase?.() || undefined,
+    });
+    await this.customerRepostory.update({ id: target.id }, newCustomer);
+    for (const key in newCustomer) {
+      if (!newCustomer[key]) delete newCustomer[key];
+    }
+    return { ...target, ...newCustomer };
   }
 
   public async setCustomerBalance(
