@@ -56,5 +56,5 @@ export class UpdateCustomerDto {
     format: 'binary',
     required: false,
   })
-  file: string;
+  file?: string;
 }

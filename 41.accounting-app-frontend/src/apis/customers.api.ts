@@ -9,6 +9,12 @@ export const getCustomersList: getCustomersList = async (params) => {
   return response.data;
 };
 
+type getCustomerInfo = (_?: id) => Promise<ICustomer>;
+export const getCustomerInfo: getCustomerInfo = async (id) => {
+  const response = await getApiClient().get(`/customers/${id}`);
+  return response.data;
+};
+
 type addNewCustomer = (_: FormData) => Promise<ICustomer>;
 export const addNewCustomer: addNewCustomer = async (data) => {
   const response = await getApiClient().post("/customers", data, {

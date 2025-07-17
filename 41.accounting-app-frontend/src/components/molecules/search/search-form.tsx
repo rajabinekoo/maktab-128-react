@@ -10,6 +10,7 @@ import {
   searchFormSchema,
   type searchFormSchemaType,
 } from "../../../validations/search-form-validation";
+import { useSearchParams } from "react-router";
 
 export const SearchForm: React.FC = () => {
   const [search, setSearch] = useState<string>("");
@@ -29,6 +30,8 @@ export const SearchForm: React.FC = () => {
 
 export const SearchForm2: React.FC = () => {
   const context = useContext(SearchContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSearchParams] = useSearchParams();
   const form = useForm<searchFormSchemaType>({
     resolver: zodResolver(searchFormSchema),
     mode: "onChange",
@@ -36,8 +39,8 @@ export const SearchForm2: React.FC = () => {
   const debounceSearch = useDebounce(form.watch("search") || "", 600);
 
   useEffect(() => {
-    if (form.formState.errors?.search) return context.setSearch("");
-    context.setSearch(debounceSearch);
+    if (form.formState.errors?.search) return setSearchParams({ s: "" });
+    setSearchParams({ s: debounceSearch });
   }, [context, debounceSearch, form.formState.errors]);
 
   return (

@@ -1,25 +1,19 @@
-import { useContext, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+
+import { Link, useSearchParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "../../atom/button";
 import { EmptyIcon } from "../../icons/empty";
 import { Pagination } from "../../atom/pagination";
-import { queryClient } from "../../../providers/query";
-import { SearchContext } from "../../../providers/search";
-import { DialogContext } from "../../../providers/dialog";
-import { useSetEditCustomer } from "../../../store/customers.store";
 import {
-  removeCustomer,
   getCustomersList,
   convertAvatarToSrc,
 } from "../../../apis/customers.api";
 
 const CustomerRow: React.FC<{
   customer: ICustomer;
-  onClickRemove: (_: number) => void;
-  setEditingCustomer: (_: ICustomer) => void;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ customer, setDialogOpen, onClickRemove, setEditingCustomer }) => {
+}> = ({ customer }) => {
   return (
     <div className="flex justify-between items-center sm:flex-nowrap flex-wrap gap-2 w-full border border-slate-300 rounded-md p-5">
       <div className="flex gap-x-3 items-center">
@@ -34,59 +28,39 @@ const CustomerRow: React.FC<{
         </div>
       </div>
       <div className="flex gap-2">
-        <Button
-          onClick={() => {
-            setEditingCustomer(customer);
-            setDialogOpen(true);
-          }}
-        >
-          Edit
-        </Button>
-        <Button varient="danger" onClick={() => onClickRemove(customer.id)}>
-          Remove
-        </Button>
+        <Link to={`/customers/${customer.id}`}>
+          <Button>Details</Button>
+        </Link>
       </div>
     </div>
   );
 };
 
 export const CustomersList = () => {
-  const [page, setPage] = useState<number>(1);
-  const { search } = useContext(SearchContext);
-  const { setOpen: setDialogOpen } = useContext(DialogContext);
+  const [searchParams] = useSearchParams();
+
+  const page = useMemo(() => {
+    return Number(searchParams.get("page")) || 1;
+  }, [searchParams]);
+
+  const search = useMemo(() => {
+    return searchParams.get("s")?.trim?.();
+  }, [searchParams]);
 
   const customers = useQuery({
     queryKey: ["customers-list", search, page],
-    queryFn: () => getCustomersList({ search: search?.trim?.(), page }),
+    queryFn: () =>
+      getCustomersList({
+        search,
+        page,
+      }),
   });
-  const deleteCustomer = useMutation({
-    mutationKey: ["remove-customer"],
-    mutationFn: removeCustomer,
-    onSuccess: () => {
-      console.log("done");
-      queryClient.invalidateQueries({ queryKey: ["customers-list"] });
-    },
-    onError: (e) => console.log(e),
-  });
-  const setEditingCustomer = useSetEditCustomer(
-    (state) => state.setEditingCustomer
-  );
-
-  const onClickRemoveCustomer = (id: number) => {
-    deleteCustomer.mutate(id);
-  };
 
   return (
     <section className="mx-auto max-w-[1000px] mt-20">
       <div className="grid grid-cols-1 gap-y-2 mt-4">
         {(customers.data?.list || []).map((el) => (
-          <CustomerRow
-            key={el.id}
-            customer={el}
-            setDialogOpen={setDialogOpen}
-            onClickRemove={onClickRemoveCustomer}
-            setEditingCustomer={setEditingCustomer}
-          />
+          <CustomerRow key={el.id} customer={el} />
         ))}
         {!customers.data?.list?.length && (
           <div className="w-full flex justify-center">
@@ -96,8 +70,7 @@ export const CustomersList = () => {
       </div>
       <div className="pt-4">
         <Pagination
-          page={page}
-          onChangePage={setPage}
+          queryKey="page"
           disabled={customers.isPending}
           totalPages={customers.data?.totalPages || 0}
         />

@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router";
 import { CgSpinnerTwo } from "react-icons/cg";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
 import { Input } from "../../atom/input";
 import { Button } from "../../atom/button";
 import { AvatarInput } from "../../atom/avatar-input";
 import { queryClient } from "../../../providers/query";
-import { DialogContext } from "../../../providers/dialog";
-import { useSetEditCustomer } from "../../../store/customers.store";
 import {
-  contactFormSchema,
+  getContactFormSchema,
   type contactFormSchemaType,
 } from "../../../validations/contact-form-validation";
 import {
@@ -20,21 +20,24 @@ import {
   convertAvatarToSrc,
 } from "../../../apis/customers.api";
 
-export const CustomerForm = () => {
+interface ICustomerProps {
+  editingCustomer?: ICustomer;
+}
+
+export const CustomerForm: React.FC<ICustomerProps> = ({ editingCustomer }) => {
   const [previewAvatar, setPreviewAvatar] = useState<string>("");
-  const { setOpen } = useContext(DialogContext);
+  const navigate = useNavigate();
 
   const form = useForm<contactFormSchemaType>({
-    resolver: zodResolver(contactFormSchema),
+    resolver: zodResolver(getContactFormSchema(!!editingCustomer)),
   });
-  const editingCustomer = useSetEditCustomer((state) => state.editingCustomer);
   const newCustomer = useMutation({
     mutationKey: ["new-customer"],
     mutationFn: addNewCustomer,
     onSuccess: () => {
       form.reset({ name: "", email: "" });
-      setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["customers-list"] });
+      navigate("/customers");
     },
     onError: (e) => console.log(e),
   });
@@ -43,8 +46,8 @@ export const CustomerForm = () => {
     mutationFn: updateCustomer,
     onSuccess: () => {
       form.reset({ name: "", email: "" });
-      setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["customers-list"] });
+      navigate("/customers");
     },
     onError: (e) => console.log(e),
   });

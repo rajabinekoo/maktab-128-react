@@ -43,6 +43,13 @@ export class CustomersController {
     return this.customersService.getCustomers({ page, limit, search });
   }
 
+  @Get(':cid')
+  public async customerInfo(@Param('cid', ParseIntPipe) cid: number) {
+    const c = await this.customersService.getCustomerById(cid);
+    if (!c) throw new NotFoundException('Customer not found');
+    return c;
+  }
+
   @Post()
   @ApiBody({ type: AddNewCustomerDto })
   @ApiConsumes('multipart/form-data')
@@ -91,11 +98,12 @@ export class CustomersController {
     }
     try {
       const oldAvatar = customer.avatar;
+      if (body.file === 'undefined') body.file = undefined;
       const result = await this.customersService.updateCustomer(customer, body);
-      await this.storageService.delete(oldAvatar);
+      if (avatar) await this.storageService.delete(oldAvatar);
       return result;
     } catch {
-      await this.storageService.delete(body.file);
+      if (body.file) await this.storageService.delete(body.file);
       throw new InternalServerErrorException('Something went wrong');
     }
   }

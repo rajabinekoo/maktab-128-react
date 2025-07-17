@@ -84,10 +84,10 @@ export class CustomersService {
 
   public async updateCustomer(target: Customer, data: UpdateCustomerDto) {
     const newCustomer = new Customer({
-      avatar: data.file || undefined,
       name: data.name?.toLowerCase?.() || undefined,
       email: data.email?.toLowerCase?.() || undefined,
     });
+    if (data.file) newCustomer.avatar = data.file;
     await this.customerRepostory.update({ id: target.id }, newCustomer);
     for (const key in newCustomer) {
       if (!newCustomer[key]) delete newCustomer[key];
