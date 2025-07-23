@@ -39,12 +39,12 @@ export class TransactionService {
 
     const page = Number(params?.page || 1);
     const limit = Number(params?.limit || 10);
-    const where: FindOptionsWhere<Transaction>[] = [];
+    const where: FindOptionsWhere<Transaction> = {};
     const search = params?.search?.trim?.()?.toLowerCase?.();
-    if (search) where.push({ description: ILike(`%${search}%`) });
-
     const hasCid = params?.cid && params.cid > 0;
-    if (hasCid) where.push({ customer: { id: params.cid } });
+
+    if (hasCid) where.customer = { id: params.cid };
+    if (search) where.description = ILike(`%${search}%`);
 
     const [list, count] = await Promise.all([
       await this.transactionRepository.find({
