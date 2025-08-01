@@ -5,7 +5,7 @@ class MongoConnection {
 
   async init() {
     if (this.connected) return;
-    await mongoose.connect("mongodb://localhost:27017/QuoteApp");
+    await mongoose.connect(<string>process.env.DATABASE_URL);
     this.connected = true;
   }
 }

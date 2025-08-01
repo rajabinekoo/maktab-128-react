@@ -11,3 +11,7 @@ interface IListRes<T> {
   pageCount: number;
   list: Array<T>;
 }
+
+interface IPayload {
+  exptime: string;
+}
