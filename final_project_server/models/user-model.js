@@ -62,7 +62,9 @@ const UserSchema = new Schema(
 
 // hash user password
 UserSchema.pre("save", function (next) {
-  this.password = bcrypt.hashSync(this.password, 12);
+  if (this.isModified("password")) {
+    this.password = bcrypt.hashSync(this.password, 12);
+  }
   next();
 });
 
